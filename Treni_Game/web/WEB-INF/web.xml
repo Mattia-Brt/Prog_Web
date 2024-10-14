@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>it.unitn.prova.filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/game.jsp</url-pattern>
+        <url-pattern>/buyLoco</url-pattern>
+        <url-pattern>/getTurno</url-pattern>
+    </filter-mapping>
+    
+    <servlet>
+        <servlet-name>createSessionServlet</servlet-name>
+        <servlet-class>it.unitn.prova.servlet.createSessionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>invalidateSessionServlet</servlet-name>
+        <servlet-class>it.unitn.prova.servlet.invalidateSessionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getTurnoServlet</servlet-name>
+        <servlet-class>it.unitn.prova.servlet.getTurnoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>buyLocoServlet</servlet-name>
+        <servlet-class>it.unitn.prova.servlet.buyLocoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>createSessionServlet</servlet-name>
+        <url-pattern>/createSession</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>invalidateSessionServlet</servlet-name>
+        <url-pattern>/invalidateSession</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getTurnoServlet</servlet-name>
+        <url-pattern>/getTurno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>buyLocoServlet</servlet-name>
+        <url-pattern>/buyLoco</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>

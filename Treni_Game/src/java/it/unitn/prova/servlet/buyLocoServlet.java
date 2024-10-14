@@ -1,0 +1,72 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package it.unitn.prova.servlet;
+
+import java.io.Console;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.logging.*;
+import javax.servlet.RequestDispatcher;
+
+/**
+ *
+ * @author mattiabirti
+ */
+public class buyLocoServlet extends HttpServlet {
+    
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        ServletContext ctx = request.getServletContext();
+        HttpSession session = request.getSession();
+        
+        /*
+        assegno il turno all'altro giocatore
+        */
+        Map<String, String> user;
+        user =(Map<String, String>) ctx.getAttribute("userOnline");
+        //user.remove(session.getAttribute("username")); //elimino momentaneamente l'user che passa la palla all'altro
+        //errore perché mi teneva salvato user e modificava semrore lo stesso la risor
+        ArrayList<String> valueList = new ArrayList<String>(user.values());
+        valueList.removeIf(n -> (n.equals(session.getId())));
+
+        String sessionID = valueList.get(0);
+        ctx.setAttribute("turno", sessionID);
+        
+        /*
+        *
+        *
+        qui va messa tutta la parte della compera della loco
+        return la loco con il prezzo
+        la pagina game.jsp poi calcola i soldi rimanenti, gestisce il layout
+        gestisce la vincita richiamando una servlet che elimina le sessioni esistenti mandando un messaggio 
+        *
+        */
+        
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/plain;charset=UTF-8");
+        out.close();
+    }
+}

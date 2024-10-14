@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            var nomeEvento = null;
+            var tableMessage;
+           
+            function creaEvento(){
+                nomeEvento = document.getElementById("titolo").value;
+                
+                if (nomeEvento == null || nomeEvento == ""){
+                    document.getElementById("errorMessage").innerHTML = "Inserire il titolo dell'evento";
+                } else{
+                    var oob_request = new XMLHttpRequest();
+                    oob_request.onreadystatechange = function(){
+                        if(this.readyState == 4 && this.status == 200){
+                            res = oob_request.responseText;
+                            if(res == "added"){
+                                //creato l'evento popolo la pagina dinamicamente
+                                var s;
+                                s = "<h1 style=\"color: green\" = >"+nomeEvento+"</h1>";
+                                s += "<button onclick=\"terminaEvento()\">Termina & Elimina Evento</button>";
+                                document.getElementById("new-event-name").innerHTML = s;
+                                document.getElementById("errorMessage").innerHTML = "";
+                                creaSezioneMessaggi();
+                            } else{
+                                document.getElementById("errorMessage").innerHTML = res;
+                            }
+                        }
+                    }
+                    oob_request.open("GET", "createEvent?eventName=" + nomeEvento , true);
+                    oob_request.send();
+                }
+            }
+            
+            function terminaEvento(){
+                var oob_request = new XMLHttpRequest();
+                    oob_request.onreadystatechange = function(){
+                        if(this.readyState == 4 && this.status == 200){
+                            res = oob_request.responseText;
+                            document.getElementById("errorMessage").innerHTML = res;
+                            setTimeout(function(){
+                                window.location.reload();
+                            },2000);
+                        }
+                    }
+                    oob_request.open("GET", "invalidateEvent?eventName=" + nomeEvento , true);
+                    oob_request.send();
+            }
+            
+            function creaSezioneMessaggi(){
+                var s = "<hr>";
+                s += "<h3>Qui sotto potrai inserire tutti i messaggi:</h3>";
+                s += "<input type=\"text\" id=\"messaggio\">";
+                s += "<button onclick=\"aggiungiMessaggio()\">Aggiungi</button>";
+                s += "<hr>";
+                document.getElementById("new-messages").innerHTML = s;
+                tableMessage = "<p style=\"font-weight: bold\"> Messaggi: </p>";
+                tableMessage += "<hr>";
+                document.getElementById("list-messages").innerHTML = tableMessage;
+            }
+            
+            function aggiungiMessaggio(){
+                var TXT = null;
+                txt = document.getElementById("messaggio").value;
+                if(txt == null || txt == ""){
+                    document.getElementById("errorMessage").innerHTML = "Inserire il messaggio";
+                } else {
+                    var oob_request = new XMLHttpRequest();
+                    oob_request.onreadystatechange = function(){
+                        if(this.readyState == 4 && this.status == 200){
+                            tableMessage += "<p style=\"font-weight: bold\">" + txt +"</p>";
+                            document.getElementById("list-messages").innerHTML = tableMessage;
+                            document.getElementById("errorMessage").innerHTML = "";
+                            document.getElementById("messaggio").value = "";
+                        }
+                    }
+                    oob_request.open("GET", "addMessage?eventName=" + nomeEvento +"&messaggio=" + txt , true);
+                    oob_request.send();                    
+                }
+            }
+            
+        </script>
+    </head>
+    <body>
+        <h1 style="background-color: aqua">New Event!</h1>
+        
+        <!-- form per l'aggiunta del titolo dell'evento (required per poter inserire i messaggi) 
+        rimanda alla servlet il tito per creare la lista (evento : messaggi) -->
+        <div id="new-event-name">
+            <h2>Inserisci il nome dell'evento che vuoi creare!</h2>
+            <input type="text" id="titolo"> 
+            <button onclick="creaEvento()">Crea Evento</button>
+        </div>
+        
+        <div id="new-messages" >
+            
+            <!-- inserisce i messaggi uno alla volta 
+            rimanda il messaggio alla servlet che lo inserisce nella lista dei messaggi dell'evento -->
+        </div>
+        <div id="list-messages">
+            
+            <!-- mostra lista messaggi (tanto dopo faccio copia incolla per mostrarli nella pagina utente -->
+        </div>
+        <p id="errorMessage" style="color: red"></p>
+    </body>
+</html>
