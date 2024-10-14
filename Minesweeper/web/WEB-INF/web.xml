@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>createSessionServlet</servlet-name>
+        <servlet-class>it.unint.prova.servlet.createSessionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getTableServlet</servlet-name>
+        <servlet-class>it.unint.prova.servlet.getTableServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getValueServlet</servlet-name>
+        <servlet-class>it.unint.prova.servlet.getValueServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>invalidateSessionServlet</servlet-name>
+        <servlet-class>it.unint.prova.servlet.invalidateSessionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>createSessionServlet</servlet-name>
+        <url-pattern>/createSession</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getTableServlet</servlet-name>
+        <url-pattern>/getTable</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getValueServlet</servlet-name>
+        <url-pattern>/getValue</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>invalidateSessionServlet</servlet-name>
+        <url-pattern>/invalidateSession</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
+</web-app>
